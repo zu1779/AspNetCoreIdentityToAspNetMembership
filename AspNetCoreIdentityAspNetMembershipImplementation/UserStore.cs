@@ -14,13 +14,14 @@
         public UserStore(MembershipContext db, string applicationName)
         {
             this.db = db ?? throw new ArgumentNullException(nameof(db));
-            ApplicationName = applicationName ?? throw new ArgumentNullException(nameof(applicationName));
+            this.applicationName = applicationName ?? throw new ArgumentNullException(nameof(applicationName));
         }
         private readonly MembershipContext db;
+        public readonly string applicationName;
 
         public IQueryable<ApplicationUser> Users {
             get {
-                return db.AspnetUsers.OrderBy(c => c.UserName).Where(c => c.Application.ApplicationName == ApplicationName)
+                return db.AspnetUsers.OrderBy(c => c.UserName).Where(c => c.Application.ApplicationName == applicationName)
                     .Select(c => new ApplicationUser
                     {
                         UserName = c.UserName,
@@ -38,8 +39,6 @@
                     });
             }
         }
-
-        public string ApplicationName { get; }
 
         public Task<IdentityResult> CreateAsync(ApplicationUser user, CancellationToken cancellationToken)
         {
