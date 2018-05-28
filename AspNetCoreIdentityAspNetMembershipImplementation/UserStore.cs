@@ -47,7 +47,7 @@
         public async Task<IdentityResult> CreateAsync(ApplicationUser user, CancellationToken cancellationToken)
         {
             Guid applicationId;
-            var trx = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable, cancellationToken);
+            var tnx = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable, cancellationToken);
             var application = await db.AspnetApplications.SingleOrDefaultAsync(c => c.ApplicationName == applicationName, cancellationToken);
             if (application == null)
             {
@@ -94,7 +94,7 @@
             };
             await db.AspnetMembership.AddAsync(newMembership, cancellationToken);
             await db.SaveChangesAsync(cancellationToken);
-
+            tnx.Commit();
             return IdentityResult.Success;
         }
 
