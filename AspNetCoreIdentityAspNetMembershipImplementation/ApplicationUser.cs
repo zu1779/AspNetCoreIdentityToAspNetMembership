@@ -4,6 +4,9 @@
 
     public class ApplicationUser
     {
+        public virtual string PasswordHash { get; set; }
+        public virtual string NormalizedUserName { get; set; }
+
         //
         // Summary:
         //     Gets or sets application-specific information for the membership user.
