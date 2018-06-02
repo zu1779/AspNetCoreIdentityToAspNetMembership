@@ -1,0 +1,6 @@
+{
+  "name": "asp.net",
+  "dependencies": {
+    "bootstrap": "v4.1.1"
+  }
+}

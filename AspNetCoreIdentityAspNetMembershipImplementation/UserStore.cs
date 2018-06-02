@@ -1,6 +1,7 @@
 ﻿namespace AspNetCoreIdentityAspNetMembershipImplementation
 {
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.Linq;
     using System.Threading;
@@ -11,7 +12,8 @@
 
     using AspNetCoreIdentityAspNetMembershipImplementation.Model;
 
-    public class UserStore : IUserStore<ApplicationUser>, IQueryableUserStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>
+    public class UserStore : IUserStore<ApplicationUser>, IQueryableUserStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>,
+        IUserRoleStore<ApplicationUser>
     {
         /// <param name="utility">Can be null.</param>
         public UserStore(MembershipContext db, string applicationName, IUtility utility)
@@ -169,5 +171,36 @@
         {
             throw new System.NotImplementedException();
         }
+
+        #region IUserRoleStore
+        public Task AddToRoleAsync(ApplicationUser user, string roleName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IList<string>> GetRolesAsync(ApplicationUser user, CancellationToken cancellationToken)
+        {
+            var response = await db.AspnetUsersInRoles
+                .Where(c => c.UserId == user.UserId)
+                .Select(c => c.Role.RoleName)
+                .ToListAsync();
+            return response;
+        }
+
+        public Task<IList<ApplicationUser>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> IsInRoleAsync(ApplicationUser user, string roleName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveFromRoleAsync(ApplicationUser user, string roleName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }
