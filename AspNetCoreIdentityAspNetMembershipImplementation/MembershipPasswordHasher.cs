@@ -13,8 +13,8 @@
             switch (user.PasswordFormat)
             {
                 case MembershipPasswordFormat.Clear: return password;
-                case MembershipPasswordFormat.Encrypted: return encryptPassword(password, user.PasswordSalt);
-                case MembershipPasswordFormat.Hashed: return hashPassword(password, user.PasswordSalt);
+                case MembershipPasswordFormat.Encrypted: return EncryptPassword(password, user.PasswordSalt);
+                case MembershipPasswordFormat.Hashed: return HashPassword(password, user.PasswordSalt);
                 default: throw new ApplicationException($"Unknown password format: {user.PasswordFormat}");
             }
         }
@@ -23,15 +23,14 @@
         {
             string providedPasswordHashed = HashPassword(user, providedPassword);
             //TODO: decide when to return PasswordVerificationResult.SuccessRehashNeeded
-            if (providedPasswordHashed == hashedPassword) return PasswordVerificationResult.Success;
-            else return PasswordVerificationResult.Failed;
+            return providedPasswordHashed == hashedPassword ? PasswordVerificationResult.Success : PasswordVerificationResult.Failed;
         }
 
-        protected virtual string encryptPassword(string password, string salt)
+        protected virtual string EncryptPassword(string password, string salt)
         {
             byte[] bIn = Encoding.Unicode.GetBytes(password);
             byte[] bSalt = Convert.FromBase64String(salt);
-            byte[] bRet = null;
+            //byte[] bRet = null;
             byte[] bAll = new byte[bSalt.Length + bIn.Length];
             Buffer.BlockCopy(bSalt, 0, bAll, 0, bSalt.Length);
             Buffer.BlockCopy(bIn, 0, bAll, bSalt.Length, bIn.Length);
@@ -42,7 +41,7 @@
             //return Convert.ToBase64String(bRet);
         }
 
-        protected virtual string hashPassword(string password, string salt)
+        protected virtual string HashPassword(string password, string salt)
         {
             byte[] bIn = Encoding.Unicode.GetBytes(password);
             byte[] bSalt = Convert.FromBase64String(salt);
