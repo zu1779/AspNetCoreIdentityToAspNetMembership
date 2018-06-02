@@ -13,11 +13,12 @@
 
     public class UserStore : IUserStore<ApplicationUser>, IQueryableUserStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>
     {
+        /// <param name="utility">Can be null.</param>
         public UserStore(MembershipContext db, string applicationName, IUtility utility)
         {
             this.db = db ?? throw new ArgumentNullException(nameof(db));
             this.applicationName = applicationName ?? throw new ArgumentNullException(nameof(applicationName));
-            this.utility = utility ?? throw new ArgumentNullException(nameof(utility));
+            this.utility = utility ?? new Utility();
         }
         private readonly MembershipContext db;
         private readonly string applicationName;

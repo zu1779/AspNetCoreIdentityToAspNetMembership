@@ -38,7 +38,7 @@
             string connectionString = "Server=localhost;Database=BioImisWeb;Trusted_Connection=True;MultipleActiveResultSets = true;";
             string applicationName = "/";
             services.AddDbContext<MembershipContext>(options => options.UseSqlServer(connectionString));
-            services.AddScoped<IUserStore<ApplicationUser>>(c => new UserStore(c.GetService<MembershipContext>(), applicationName));
+            services.AddScoped<IUserStore<ApplicationUser>>(sp => new UserStore(sp.GetService<MembershipContext>(), applicationName, sp.GetService<IUtility>()));
             services.AddMvc();
         }
 
