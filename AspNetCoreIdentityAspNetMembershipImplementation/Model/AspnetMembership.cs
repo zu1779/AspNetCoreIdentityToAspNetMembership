@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AspNetCoreIdentityAspNetMembershipImplementation.Model
+﻿namespace AspNetCoreIdentityAspNetMembershipImplementation.Model
 {
+    using System;
+
+    using AspNetCoreIdentityAspNetMembershipImplementation;
+
     public partial class AspnetMembership
     {
         public Guid ApplicationId { get; set; }
         public Guid UserId { get; set; }
         public string Password { get; set; }
-        public int PasswordFormat { get; set; }
+        public MembershipPasswordFormat PasswordFormat { get; set; }
         public string PasswordSalt { get; set; }
         public string MobilePin { get; set; }
         public string Email { get; set; }

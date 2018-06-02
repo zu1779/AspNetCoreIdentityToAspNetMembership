@@ -5,6 +5,8 @@
     public class ApplicationUser
     {
         public virtual string PasswordHash { get; set; }
+        public virtual MembershipPasswordFormat PasswordFormat { get; set; }
+        public virtual string PasswordSalt { get; set; }
         public virtual string NormalizedUserName { get; set; }
 
         //

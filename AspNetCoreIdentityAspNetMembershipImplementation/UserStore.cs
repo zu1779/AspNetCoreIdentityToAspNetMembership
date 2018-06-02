@@ -26,12 +26,15 @@
 
         public IQueryable<ApplicationUser> Users {
             get {
-                return db.AspnetUsers.OrderBy(c => c.UserName).Where(c => c.Application.ApplicationName == applicationName)
+                var response = db.AspnetUsers.OrderBy(c => c.UserName).Where(c => c.Application.ApplicationName == applicationName)
                     .Select(c => new ApplicationUser
                     {
                         UserName = c.UserName,
                         Email = c.AspnetMembership.Email,
+                        PasswordFormat = c.AspnetMembership.PasswordFormat,
+                        PasswordHash = c.AspnetMembership.Password,
                         PasswordQuestion = c.AspnetMembership.PasswordQuestion,
+                        PasswordSalt = c.AspnetMembership.PasswordSalt,
                         Comment = c.AspnetMembership.Comment,
                         IsApproved = c.AspnetMembership.IsApproved,
                         CreationDate = c.AspnetMembership.CreateDate,
@@ -42,6 +45,7 @@
                         IsLockedOut = c.AspnetMembership.IsLockedOut,
                         LastLockoutDate = c.AspnetMembership.LastLockoutDate,
                     });
+                return response;
             }
         }
 
@@ -109,14 +113,16 @@
             //nop
         }
 
-        public Task<ApplicationUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
+        public async Task<ApplicationUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
-            return Users.SingleOrDefaultAsync(c => c.UserId == Guid.Parse(userId), cancellationToken);
+            var response = await Users.SingleOrDefaultAsync(c => c.UserId == Guid.Parse(userId), cancellationToken);
+            return response;
         }
 
-        public Task<ApplicationUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
+        public async Task<ApplicationUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
-            return Users.SingleOrDefaultAsync(c => c.UserName == normalizedUserName, cancellationToken);
+            var response = await Users.SingleOrDefaultAsync(c => c.UserName == normalizedUserName, cancellationToken);
+            return response;
         }
 
         public Task<string> GetNormalizedUserNameAsync(ApplicationUser user, CancellationToken cancellationToken)
