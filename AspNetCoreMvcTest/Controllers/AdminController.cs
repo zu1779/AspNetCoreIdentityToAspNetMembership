@@ -4,12 +4,14 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     using AspNetCoreIdentityAspNetMembershipImplementation;
     using AspNetCoreMvcTest.Models.Admin;
 
+    [Authorize(Roles = "root")]
     public class AdminController : Controller
     {
         public AdminController(UserManager<ApplicationUser> userManager)

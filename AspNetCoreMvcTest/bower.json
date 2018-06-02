@@ -1,6 +1,7 @@
 {
   "name": "asp.net",
   "dependencies": {
-    "bootstrap": "v4.1.1"
+    "bootstrap": "v4.1.1",
+    "Font-Awesome": "5.0.13"
   }
 }
