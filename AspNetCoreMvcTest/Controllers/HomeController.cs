@@ -22,10 +22,7 @@
 
         public IActionResult Index()
         {
-            var list = new List<string> { "Test page model" };
-            list.Add("Listing users:");
-            list.AddRange(userManager.Users.Select(u => JsonConvert.SerializeObject(u)));
-            return View(list);
+            return View();
         }
 
         public IActionResult About()
