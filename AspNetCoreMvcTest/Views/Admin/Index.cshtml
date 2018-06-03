@@ -1,9 +1,13 @@
 ﻿@using AspNetCoreMvcTest.Models.Admin
 @model IndexViewModel
 
+@{
+    ViewBag.Title = "Admin Index";
+}
+
 <h1>Admin Index</h1>
 
-<table class="table thead-light table-bordered">
+<table class="hover stack">
     <thead>
         <tr>
             <th>UserId</th>
@@ -22,10 +26,9 @@
                     @user.UserName
                 </td>
                 <td>
-                    @*string.Join(", ", user.Roles.OrderBy(c => c))*@
                     @foreach (var role in user.Roles.OrderBy(c => c))
                     {
-                        <span class="badge badge-pill badge-light">@role&nbsp;<i class="fa fa-times text-danger"></i></span>
+                        <span class="primary label">@role&nbsp;<a style="color: red;"><i class="fa fa-times-circle"></i></a></span>
                     }
                 </td>
             </tr>

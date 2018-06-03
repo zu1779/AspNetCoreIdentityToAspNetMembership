@@ -1,5 +1,11 @@
-﻿<!DOCTYPE html>
-<html>
+﻿@using Microsoft.AspNetCore.Identity
+@using AspNetCoreIdentityAspNetMembershipImplementation
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,42 +21,59 @@
         <script src="~/lib/foundation/js/foundation.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
+
+    <style>
+        .menu a {
+            color: lightgray;
+        }
+
+        .validation-summary-errors, .field-validation-error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        @*<a class="navbar-brand" href="#">Asp.net core identity to asp.net membership test</a>*@
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
-                </li>
-            </ul>
-            @await Html.PartialAsync("_LoginPartial")
-        </div>
-    </nav>
-
-    <nav class="navbar navbar-dark sticky-top">
-        <div class="container">
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+    <div data-sticky-container>
+        <div class="title-bar" data-sticky data-options="marginTop:0;" style="width:100%">
+            <div class="title-bar-left">
+                <ul class="menu">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                 </ul>
-                @await Html.PartialAsync("_LoginPartial")
+            </div>
+            <div class="title-bar-right">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+                        <ul class="menu align-right">
+                            <li>
+                                <a asp-area="" asp-controller="Admin" asp-action="Index" title="Admin">Admin</a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">@UserManager.GetUserName(User)</a>
+                            </li>
+                            <li class="nav-item">
+                                <button type="submit" class="alert button">Log out</button>
+                            </li>
+                        </ul>
+                    </form>
+                }
+                else
+                {
+                    <ul class="menu align-right">
+                        <li>
+                            <a asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Account" asp-action="Login">Log in</a>
+                        </li>
+                    </ul>
+                }
             </div>
         </div>
-    </nav>
+    </div>
+    
     <div class="container body-content">
         @RenderBody()
         <hr />
@@ -58,6 +81,12 @@
             <p>&copy; 2018 - AspNetCoreMvcTest</p>
         </footer>
     </div>
+
+    <script>
+        $(function () {
+            $(document).foundation();
+        });
+    </script>
 
     @RenderSection("Scripts", required: false)
 </body>
