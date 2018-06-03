@@ -27,8 +27,7 @@
                 Users = userManager.Users.ToList()
                 .Select(async c => new UserModel
                 {
-                    UserId = c.UserId,
-                    UserName = c.UserName,
+                    User = c,
                     Roles = await userManager.GetRolesAsync(c),
                 }).Select(c => c.Result).ToList()
             };

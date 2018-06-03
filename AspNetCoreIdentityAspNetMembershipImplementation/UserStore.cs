@@ -26,6 +26,7 @@
         private readonly string applicationName;
         private readonly IUtility utility;
 
+        #region IQueryableUserStore
         public IQueryable<ApplicationUser> Users {
             get {
                 var response = db.AspnetUsers.OrderBy(c => c.UserName).Where(c => c.Application.ApplicationName == applicationName)
@@ -50,7 +51,9 @@
                 return response;
             }
         }
+        #endregion
 
+        #region IUserStore
         public async Task<IdentityResult> CreateAsync(ApplicationUser user, CancellationToken cancellationToken)
         {
             Guid applicationId;
@@ -132,11 +135,6 @@
             return Task.FromResult(user.NormalizedUserName);
         }
 
-        public Task<string> GetPasswordHashAsync(ApplicationUser user, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(user.PasswordHash);
-        }
-
         public Task<string> GetUserIdAsync(ApplicationUser user, CancellationToken cancellationToken)
         {
             return Task.FromResult(user.UserId.ToString());
@@ -147,19 +145,9 @@
             return Task.FromResult(user.UserName);
         }
 
-        public Task<bool> HasPasswordAsync(ApplicationUser user, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(user.PasswordHash != null);
-        }
-
         public Task SetNormalizedUserNameAsync(ApplicationUser user, string normalizedName, CancellationToken cancellationToken)
         {
             return Task.Run(() => user.NormalizedUserName == normalizedName);
-        }
-
-        public Task SetPasswordHashAsync(ApplicationUser user, string passwordHash, CancellationToken cancellationToken)
-        {
-            return Task.Run(() => user.PasswordHash = passwordHash);
         }
 
         public Task SetUserNameAsync(ApplicationUser user, string userName, CancellationToken cancellationToken)
@@ -171,6 +159,24 @@
         {
             throw new System.NotImplementedException();
         }
+        #endregion
+
+        #region IUserPasswordStore
+        public Task<string> GetPasswordHashAsync(ApplicationUser user, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(user.PasswordHash);
+        }
+
+        public Task<bool> HasPasswordAsync(ApplicationUser user, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(user.PasswordHash != null);
+        }
+
+        public Task SetPasswordHashAsync(ApplicationUser user, string passwordHash, CancellationToken cancellationToken)
+        {
+            return Task.Run(() => user.PasswordHash = passwordHash);
+        }
+        #endregion
 
         #region IUserRoleStore
         public Task AddToRoleAsync(ApplicationUser user, string roleName, CancellationToken cancellationToken)

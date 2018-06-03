@@ -10,9 +10,10 @@
 <table class="hover stack">
     <thead>
         <tr>
-            <th>UserId</th>
             <th>UserName</th>
             <th>Roles</th>
+            <td>IsApproved</td>
+            <td>IsLockedOut</td>
         </tr>
     </thead>
     <tbody>
@@ -20,15 +21,33 @@
         {
             <tr>
                 <td>
-                    @user.UserId
-                </td>
-                <td>
-                    @user.UserName
+                    @user.User.UserName
                 </td>
                 <td>
                     @foreach (var role in user.Roles.OrderBy(c => c))
                     {
-                        <span class="primary label">@role&nbsp;<a style="color: red;"><i class="fa fa-times-circle"></i></a></span>
+                        <span class="primary label">@role&nbsp;-&nbsp;<a style="color: yellow;"><i class="fa fa-times-circle"></i></a></span>
+                    }
+                    <a><i class="fa fa-plus-square"></i></a>
+                </td>
+                <td>
+                    @if (user.User.IsApproved)
+                    {
+                        <i style="color: green;" class="fa fa-user"></i>
+                    }
+                    else
+                    {
+                        <i style="color: red;" class="fa fa-times"></i>
+                    }
+                </td>
+                <td>
+                    @if (user.User.IsLockedOut)
+                    {
+                        <i style="color: red;" class="fa fa-lock"></i>
+                    }
+                    else
+                    {
+                        <i style="color: green;" class="fa fa-unlock"></i>
                     }
                 </td>
             </tr>
