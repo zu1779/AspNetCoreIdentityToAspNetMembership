@@ -25,7 +25,7 @@
                     @*string.Join(", ", user.Roles.OrderBy(c => c))*@
                     @foreach (var role in user.Roles.OrderBy(c => c))
                     {
-                        <span class="badge badge-pill badge-dark">@role</span>
+                        <span class="badge badge-pill badge-light">@role&nbsp;<i class="fa fa-times text-danger"></i></span>
                     }
                 </td>
             </tr>
